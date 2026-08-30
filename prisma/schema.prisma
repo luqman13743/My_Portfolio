@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Swap to "postgresql" + a real connection string for production.
+  // See .env.example for the exact variable to set.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+}
+
+model Profile {
+  id           String   @id @default(cuid())
+  name         String
+  title        String
+  summary      String
+  aboutBody    String
+  researchInterests String   @default("")
+  careerInterests   String   @default("")
+  keyStrengths      String   @default("")
+  profileImageUrl   String?
+  email        String?
+  phone        String?
+  location     String?
+  linkedin     String?
+  github       String?
+  otherLinkLabel String?
+  otherLinkUrl   String?
+  cvDocumentId String?
+  updatedAt    DateTime @updatedAt
+}
+
+model Education {
+  id          String   @id @default(cuid())
+  degree      String
+  institution String
+  city        String?
+  country     String?
+  startDate   String
+  endDate     String
+  fieldOfStudy String?
+  details     String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Experience {
+  id           String   @id @default(cuid())
+  position     String
+  organization String
+  location     String?
+  startDate    String
+  endDate      String
+  responsibilities String
+  skillsUsed   String   @default("")
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  name     String
+  category String
+  order    Int    @default(0)
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  role         String?
+  methods      String   @default("")
+  date         String?
+  externalUrl  String?
+  documentId   String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+}
+
+model Certification {
+  id             String   @id @default(cuid())
+  title          String
+  issuer         String
+  date           String?
+  verificationUrl String?
+  documentId     String?
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  category    String
+  fileUrl     String?
+  externalUrl String?
+  fileName    String?
+  fileType    String?
+  fileSize    Int?
+  isPublic    Boolean  @default(true)
+  uploadedAt  DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  title     String   @default("")
+  imageUrl  String
+  caption   String?
+  order     Int      @default(0)
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model NavigationItem {
+  id        String   @id @default(cuid())
+  label     String
+  href      String
+  order     Int      @default(0)
+  isVisible Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id            String  @id @default("singleton")
+  siteTitle     String  @default("Portfolio")
+  metaDescription String @default("")
+  ogImageUrl    String?
+  primaryColorNote String @default("")
+}
